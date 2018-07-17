@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Source: http://zurb.com/playground/social-webicons -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 48 48">
+	<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+		<stop offset="0" stop-color="#4B71B8"/>
+		<stop offset="1" stop-color="#293F7E"/>
+	</linearGradient>
+	<rect x="0" y="0" width="48" height="48" rx="6" ry="6" fill="url(#lg)"/>
+	<path fill="#FFFFFF" d="M39.613,9.443h-6.166c-3.662,0,-7.732,1.535,-7.732,6.835v5.603h-4.234v6.728h4.366v19.391h8.021v-19.52h5.295l0.479,-6.618h-5.913v-3.8c0,-2.093,2.184,-1.974,2.312,-1.974h3.578z"/>
+</svg>

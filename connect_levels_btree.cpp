@@ -50,7 +50,6 @@ void level_traversal(node* temp,int level,queue <pair<node*,int> > q){
 		else
 			break;
 		
-		
 	}
 
 }

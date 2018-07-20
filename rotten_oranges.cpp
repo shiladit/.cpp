@@ -27,7 +27,7 @@ void rotting(int i,int j,int r,int c) {
 
 void print (int r ,int c) {
 
-	cout << "PRINTING" << endl;
+	cout << "----PRINTING----" << endl;
 
 	for(int i=0;i<r;i++) {
 		for(int j=0;j<c;j++){
@@ -55,8 +55,8 @@ void call_rot_func(int r,int c) {
 			if(arr[i][j] == 2)
 				rotting(i,j,r,c);
 		}
-
-	//print(r,c);
+	cout << endl;
+	print(r,c);
 
 	same = true;
 	//Checking if values in both matrices are same	

@@ -1,44 +1,34 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main() {
-	int n;
-	cin >> n;
-	bool flag= true;
-	int count =0;
-	int num = n;
-	int j=0;
-	int temp;
-	while(n != 0){
+bool check_set(int x,int y){
+	return (x & (1 << y)) ? true : false;
+}
 
-		temp = n%2;
-		if(temp == 1)
-			count++;
+bool check_pali(int x){
+	int i=0;
+	int j = floor(log2(x));
+	
+	while(i < j){
+		if( check_set(x,i) != check_set(x,j))
+			return false;
 
-		
-		n = n >> 1;
-		j++;
+		i++;
+		j--;
 	}
 
-	// cout << j << endl;
+	return true;
+}
 
-	num = 3;
-	int temp1 =pow(2,0);
-	cout << temp1 << endl;
-	int temp2 = pow(2,1);
-	cout << temp2 << endl;
-	if((num & temp1) == (num & temp2))
-		cout << "hi\n";
+int main() {
+	int x;
+	cin >> x;
 
+	bool flag = check_pali(x);
 
-
-	// for(int i=0;i<j/2;i++)
-	// 	if((num & 2^i) != (num & 2^(j-i-1)))
-	// 		flag= false;  
-
-	// if(flag == true)
-	// 	cout << "pal\n";
-	// else
-	// 	cout << "-1\n";
+	if(!flag)
+		cout << "NO\n" << endl;
+	else
+		cout << "YES\n" << endl;
 }

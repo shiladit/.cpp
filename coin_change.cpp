@@ -2,41 +2,51 @@
 
 using namespace std;
 
-void CoinChange(int coins[],int n,int sum){
-	int arr[sum+1];
+int main() {
 
-	//INIT
-	for (int i=1;i<sum+1;i++)
-		arr[i] = 99999;
-
-	arr[0]= 0;
-   
- //   //PRINT
-	// for (int i=0;i<sum+1;i++)
-	// 	cout << arr[i] << " " << endl;
+	int no_of_coins,temp;
+	cin >> no_of_coins;
 
 
-	for(int i=0;i<n;i++)
-		for(int j=1;j<sum+1;j++){
-			if(j<coins[i])
-				arr[j] = 9999;
-			else 
-				arr[j] = min(arr[j] , 1+arr[j-coins[i]]);
+	vector <int> coins;
+
+	for(int i=0;i<no_of_coins;i++){
+		cin >> temp;
+		coins.push_back(temp);
+	}
+
+	int N;
+	cin >> N;
+
+	vector <vector <int> > aux(coins.size()+1,vector <int> (N+1));
+
+
+	for(int i=0;i<coins.size()+1;i++)
+		for(int j=0;j<N+1;j++){
+			if( j == 0)
+				aux[i][j] = 1;
+			else if (i==0)
+				aux[i][j] = 0;
 		}
-    //PRINT
-	// for (int i=0;i<sum+1;i++)
-	// 	cout << arr[i] << " " ;
 
-	cout << arr[sum] << endl;
-}
+	
+	for(int i=1;i<coins.size()+1;i++)
+		for(int j=1;j<N+1;j++){
+			if(coins[i-1] <=j)
+				aux[i][j] = aux[i-1][j] + aux[i][j-coins[i-1]];
+			else
+				aux[i][j] = aux[i-1][j];
+
+		}
+
+	for(int i=0;i<coins.size()+1;i++){
+		for(int j=0;j<N+1;j++)
+			cout << aux[i][j] << " ";
+		cout << endl;
+	}
 
 
-int main()
-{
-    int coins[] = {7, 2, 3,6};
-    int n = sizeof(coins)/sizeof(coins[0]);
 
-    int sum = 13; 
-    CoinChange(coins,n,sum);
-    return 0;
+
+
 }

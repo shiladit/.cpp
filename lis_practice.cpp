@@ -3,6 +3,11 @@
 using namespace std;
 
 int main() {
+
+	int t;
+	cin >> t;
+
+	while(t--){
 	int size;
 
 	cin >> size;
@@ -34,8 +39,6 @@ int main() {
 
 	}
 
-	for(int i=0;i<size;i++)
-		cout << aux[i] << " ";
-
-	cout << endl;
+	cout << aux[size-1] << endl;
+}
 }

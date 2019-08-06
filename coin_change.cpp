@@ -45,8 +45,4 @@ int main() {
 		cout << endl;
 	}
 
-
-
-
-
 }

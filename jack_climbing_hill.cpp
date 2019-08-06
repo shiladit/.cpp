@@ -20,7 +20,6 @@ int find_mono_decrease(vector <int> arr){
             pq.pop();
             pq.push(arr[i]);
         }
-        // else
             pq.push(arr[i]);
     }
 
@@ -40,7 +39,6 @@ int find_mono_increase(vector <int> arr){
             pq.pop();
             pq.push(arr[i]);
         }
-        // else
             pq.push(arr[i]);
     }
 
@@ -62,7 +60,7 @@ int main() {
     int a = find_mono_decrease(arr); 
     int b = find_mono_increase(arr);
 
-    cout << a << " -- " << b << endl;
+//     cout << a << " -- " << b << endl;
 
-    // cout << min(a,b) << endl;
+    cout << min(a,b) << endl;
 }

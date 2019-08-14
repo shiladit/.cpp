@@ -1,92 +1,98 @@
-#include <iostream>
-#include <vector>
+//shiladitya
+#include <bits/stdc++.h>
+#define ll long long
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define mod (1000*1000*1000+7)
+#define vi vector < int >
+#define vl vector < ll >
+#define pqueue priority_queue< int >
+#define pdqueue priority_queue< int,vi ,greater< int > >
 
 using namespace std;
 
+int arr[10][10];
+bool visited[10][10] = {{false}};
 
+void print_mat(int n,int m) {
 
-
-int find_conn(vector <vector<int> > matrix,int r,int c){
-    
-    matrix[r][c] = 2;
-    cout << r << " -- " << c << endl;
-    // int count=1;
-    int count=1;
-
-    for(int i=r-1;i<=r+1;i++){
-        for(int j=c-1;j<=c+1;j++){
-            bool flag = (i>=0 && i<matrix.size()) && (j>=0 && j<matrix[i].size());
-            if(flag && !((matrix[i][j] == 2) || (matrix[i][j] == 0 ))){
-                // cout << i << " -- " << j << endl;
-                count = 1 + find_conn(matrix,i,j);
-            }
+f(i,0,n){
+    f(j,0,m){
+        cout << arr[i][j] << " "; 
         }
+    cout << endl;
     }
-    
-    
-    
-    return count;
 }
 
-// Complete the connectedCell function below.
-int connectedCell(vector <vector<int> > matrix) {
-    int max = -1;
-    
-    
-    for(int i=0;i<matrix.size();i++)
-        for(int j=0;j<matrix[i].size();j++) {
-            if(matrix[i][j] == 1){
-                int sum = find_conn(matrix,i,j);
-                cout << "BUM\n";
-                if(sum > max)
-                    max = sum;
-                
-            }
-        }
-    
-    
-    return max;
-    
-    
+bool issafe(int a,int b,int n,int m){
+    if(a>=0 && a<n && b>=0 && b<m)
+        return true;
+    else
+        return false;
 }
 
-int main()
-{
-    
-    int n,m;
-    int temp;
-    
-    
-    cin >> n;
-    
-    cin >> m;
+int movex[8] ={1,0,1,-1,-1,-1,0,1};
+int movey[8] ={0,1,1,1,0,-1,-1,-1}; 
 
-    vector<vector<int> > matrix(n); 
-    
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            cin >> temp;
-            matrix[i].push_back(temp);
-        }
-        
+int main() {
+
+int n,m;
+cin >> n >> m;
+
+f(i,0,n)
+    f(j,0,m){
+        cin >> arr[i][j]; 
     }
 
-    
+// print_mat(n,m);
+
+int max_size = 0;    
+
+f(i,0,n)
+    f(j,0,m){
+        if(visited[i][j] == false && arr[i][j] == 1){
+
+            int count = 1;
+            queue <pair <int,int> > q;
+            q.push(make_pair(i,j));
+            visited[i][j] = true;
 
 
-    
-    int result = connectedCell(matrix);
+            while(!q.empty()){
+                pair <int,int> p = q.front();
+                int x = p.first;
+                int y = p.second;
 
-    // for (int i = 0; i < n; i++) {
-    //     for (int j = 0; j < m; j++) {
-    //         cout << matrix[i][j] << " ";
-    //     }
-    //     cout << endl;
-        
-    // }
-    
-    cout << result << endl;
-    
-    return 0;
+                q.pop();
+
+                for(int z=0;z<8;z++){
+                    if(issafe(x+movex[z],y+movey[z],n,m) && visited[x+movex[z]][y+movey[z]] == false && arr[x+movex[z]][y+movey[z]] == 1){
+                        visited[x+movex[z]][y+movey[z]] = true;
+                        q.push(make_pair(x+movex[z],y+movey[z]));
+                        count++;
+                    }
+                }
+            }
+
+            if(count > max_size)
+                max_size = count;
+
+            
+        }
+    }
+
+    cout << max_size << endl;
+
 }
+
+
+
+/*DEBUG
+
+for(int i=0;i<n;i++)
+    for(int j=0;j<n;j++)
+        cout << << endl;
+
+cout << << << endl;
+
+*/
 

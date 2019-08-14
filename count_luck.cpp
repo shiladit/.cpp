@@ -1,154 +1,125 @@
-#include <iostream>
-#include <string>
-
+//shiladitya
+#include <bits/stdc++.h>
+#define ll long long
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define pb push_back
+#define mp make_pair
+#define mod (1000*1000*1000+7)
+#define vi vector < int >
+#define vl vector < ll >
+#define pqueue priority_queue< int >
+#define pdqueue priority_queue< int,vi ,greater< int > >
 
 using namespace std;
 
+char arr[100][100];
+int decision[100][100];
+bool visited[100][100];
 int n,m;
-char matrix[100][100];
-int path[100][100];
-int flag =0;
-int paths = 0;
+int movex[4] = {-1,1,0,0};
+int movey[4] = {0,0,-1,1};
 
-
-bool valid(int x,int y){
-    
-    if(x >=0 && y >=0 && x < n && y < m)
-        return true;
-    else
-        return false;
+bool issafe(int x,int y){
+  if(x >=0 && x<n && y >=0 && y <m)
+    return true;
+  else
+    return false;
 }
 
-int dfs(int x,int y){
-    if(matrix[x][y] == '*'){
-        path[x][y] = 200;
-        flag =1;
-        return 1;
+int neighbours(int x,int y){
+
+    int count = 0;
+
+    for(int i=0;i<4;i++){
+      if(issafe(x+movex[i],y+movey[i]) && arr[x+movex[i]][y+movey[i]] == '.' && visited[x+movex[i]][y+movey[i]] == false)
+        count++;
     }
-    
-    
-    if(matrix[x][y] == 'X'){
-        return 0;
-    }
-    
-    matrix[x][y] = '0';
-    path[x][y] = 1;
-    
-    
-    
-    //UP
-    if(valid(x-1,y) == true && matrix[x-1][y] != '0' && !flag){
-        dfs(x-1,y);
-    }
-    
-    //DOWN
-    if(valid(x+1,y) == true && matrix[x+1][y] != '0' && !flag)
-        dfs(x+1,y);
-    
-    
-    //LEFT
-    if(valid(x,y-1) == true && matrix[x][y-1] != '0' && !flag)
-        dfs(x,y-1);
-    
-    //RIGHT
-    if(valid(x,y+1) == true && matrix[x][y+1] != '0' && !flag)
-        dfs(x,y+1);
-    
-    
-    return 0;
+
+return count;
 }
 
-vector<string> split_string(string);
+int main() {
+ 
+  int t;
+  cin >> t;
+  while(t--){
+  
+    cin >> n >> m;
 
-// Complete the countLuck function below.
-void countLuck() {
-    
-    int start_x= -1;
-    int start_y= -1;
-    
-    
-    for(int i=0;i<n;i++)
-        for(int j=0;j<m;j++)
-            if(matrix[i][j] == 'M'){
-                start_x = i;
-                start_y = j;
-                break;
-            }
-    
-   // cout << start_x << " -- " << start_y << endl;
-    
-    dfs(start_x,start_y);
-    
-    
-}
+    int startx = -1;
+    int starty = -1;
 
-int main()
-{
-    
-    
-    int t;
-    cin >> t;
-    
-    
-    while(t--){
-        
-        string matrix_item;
+    int endx = -1;
+    int endy = -1;
 
-        cin >> n >> m ;
+    f(i,0,n)
+      f(j,0,m){
+        char c;
+        cin >> c;
+        arr[i][j] = c;
 
-        //Initializing path matrix
-        for(int i=0;i<n;i++)
-           for(int j=0;j<m;j++)
-               path[i][j] = 0;
-       
-
-        for(int i=0;i<n;i++)
-           for(int j=0;j<m;j++)
-               path[i][j] =0;
-        
-        paths =0 ;
-
-    
-        
-        for (int i = 0; i < n; i++) {
-            cin >> matrix_item;
-            for(int j=0;j<m;j++)
-                matrix[i][j] = matrix_item[j];
+        if(c == 'M'){
+          startx =i;
+          starty =j;
         }
 
-        cout << "Printing matrix\n";
+        if(c == '*'){
+          endx =i;
+          endy= j;
+        }
 
-       for(int i=0;i<n;i++){
-           for(int j=0;j<m;j++){
-               cout << matrix[i][j] << " ";
-           }
-       cout << endl;
-       }
-        
-        
-        int k;
-        cin >> k;
-        
-        countLuck();
-        
-        
-        if(flag ==1)
-            cout << "Found" << endl;
-        else
-            cout << "Not Found" << endl;
-        
-       cout << "Printing path matrix\n";
+        //mandate
+        decision[i][j] = 10000;
+        visited[i][j] = false;
+      }
 
-       for(int i=0;i<n;i++){
-           for(int j=0;j<m;j++){
-               cout << path[i][j] << " ";
-           }
-       cout << endl;
-       }
+    int k;
+    cin >> k;
 
 
+    queue<pair<pair<int,int>,int> > q;
+
+    visited[startx][starty] = true;
+    q.push(make_pair(make_pair(startx,starty),0));
+
+    while(!q.empty()){
+
+      pair<pair<int,int>,int> p = q.front();
+      q.pop();
+
+      // decision[p.first.first][p.first.second] = p.second ;
+
+      cout << p.first.first << "," << p.first.second << "  decision: " << p.second << endl;
+
+      // if(arr[p.first.first][p.first.second] == '*'){
+      //   cout << p.second << endl;
+      //   break;
+      // }
+
+      // f(i,0,4){
+      //   if(issafe(p.first.first+movex[i],p.first.second+movey[i]) && visited[p.first.first+movex[i]][p.first.second+movey[i]] == false && arr[p.first.first+movex[i]][p.first.second+movey[i]] != 'X'){
+      //     visited[p.first.first+movex[i]][p.first.second+movey[i]] = true;
+
+    if(neighbours(p.first.first,p.first.second) >= 2){
+      cout << "neighbours " << p.first.first << "," << p.first.second << " --> " << neighbours(p.first.first,p.first.second) << endl;
+      q.push(make_pair(make_pair(p.first.first+movex[i],p.first.second+movey[i]),1+p.second));
     }
-    
-    
-    return 0;
+    else
+      q.push(make_pair(make_pair(p.first.first+movex[i],p.first.second+movey[i]),p.second));
+  }
+      
+    }
+
+
+  }
+
+
+  // for(int i=0;i<n;i++){
+  //   for(int j=0;j<m;j++)
+  //     cout << decision[i][j] << " ";
+
+  //   cout << endl;
+  // }
+
+
 }

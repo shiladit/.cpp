@@ -13,30 +13,39 @@
 
 using namespace std;
 
+ll cal_sum(string s,ll i,ll j){
+	j=j-1;
+
+	if(i<=j){
+		return (ll)(s[j]-'0') + cal_sum(s,i,j);
+	}
+	else
+		return 0;
+}
+
+ll cal_int_sum(ll n){
+
+    if(n == 0)
+        return 0;
+    else
+        return n%10 + cal_int_sum(n/10);
+}
+
 int main(){
-	ll n,k,q;
-	map <ll,ll> map1;
+	string n;
+	ll k;
 
-	cin >> n >> k >> q;
+	cin >> n >> k;
 
-	for(int i=0;i<n;i++){
-		ll x;
-		cin >> x;
-		map1[i] = x;
+	ll m = cal_sum(n,0,n.length()) ;
+
+	cout << m << endl;
+	
+	m = m *k;
+
+	while(m/10 != 0){
+		m = cal_int_sum(m);
 	}
 
-	map <ll,ll> map2;
-
-	for(int i=0;i<n;i++){
-		map2[(i+k)%n] = map1[i];
-	}
-
-	while(q--){
-		ll elem;
-		cin >> elem;
-		cout << map2[elem] << endl;
-	}
-
-
-
+	cout << m << endl;
 }

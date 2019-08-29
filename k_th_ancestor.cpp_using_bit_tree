@@ -1,0 +1,114 @@
+//shiladitya
+#include <iostream>
+#include <cstring>
+#define ll long long
+
+using namespace std;
+
+int par[20][100001];
+
+void print(){
+    for(int i=0;i<20;i++){
+        for(int j=0;j<100001;j++)
+            cout << par[i][j] << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+
+int main() {
+    ll t;
+    cin >> t;
+
+    while(t--){
+
+        // Initializing
+        memset(par,0,sizeof(par));
+    
+
+        ll n;
+        cin >> n;
+
+        ll x,y; 
+
+        // Filling up first level parents
+
+        for(ll i=0;i<n;i++){
+            cin >> x >> y ; // y is parent, x is child
+            par[0][x] = y;
+        }
+
+
+        //Compute 20 level of parents(2^i) for each node
+
+        for(int i=1;i<20;i++)
+            for(int j=0;j<100001;j++)
+                par[i][j] = par[i-1][par[i-1][j]];
+
+        // print();
+
+
+        ll q;
+        cin >> q;
+
+
+        while(q--){
+
+            ll type;
+            cin >> type;
+
+            if(type == 0){
+
+                // Inserting a leaf node
+
+                ll u,v;
+                cin >> u >> v;
+
+                par[0][v] = u;
+
+                // Computing all its 2^i parents where i varies between 0 to 15
+
+                for(int i=1;i<20;i++)
+                    par[i][v] = par[i-1][par[i-1][v]];              
+            }
+            else if (type == 1){
+                ll u;
+                cin >> u;
+
+                // Deleting a leaf node
+
+                // Making all of its parents as 0
+
+                for(int i=0;i<20;i++)
+                    par[i][u] = 0;
+            }
+            else{
+
+                // Finding k-th level parents in O(log k) time where log k is the number of bits 
+
+                ll v, k;
+                cin >> v >> k;
+                if(par[0][v] == 0){
+                    printf("0\n");
+                    continue;
+                }
+                int count = 0;
+
+                while(k){
+
+                    if((k & 1) == 1){
+                        v = par[count][v];
+                    }
+                    if(v == 0)
+                        break;
+
+                    count++;
+                    k = k >> 1;
+                }
+
+                printf("%d\n",v);
+            }
+        }       
+    }
+}

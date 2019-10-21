@@ -70,6 +70,5 @@ int main(){
 		j++;
 	}
 
-	cout << count << endl;
-	
+	cout << count << endl;	
 }

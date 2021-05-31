@@ -1,135 +1,121 @@
 #include <iostream>
-// #define long ll
-#define DIM 200
+#define dim 200
 
 using namespace std;
 
 long r,c,n;
-int arr[DIM][DIM];
-int g1[DIM][DIM];
-int g2[DIM][DIM];
-int g3[DIM][DIM];
-int g4[DIM][DIM];
+int arr[dim][dim];
 
-int arrx[4] = {1,0,-1,0};
-int arry[4] = {0,1,0,-1};
+int offsetx[4] = { 0, 0, -1, 1};
+int offsety[4] = { -1, 1, 0, 0};
 
-bool issafe(int x,int y){
-	if(x>=0 && x<r && y>=0 && y<c)
-		return true;
-	else
-		return false;
+bool issafe(int x,int y)
+{
+    if(x>=0 && x<r && y>=0 && y<c)
+        return true;
+    else
+        return false;
 }
 
+void show_matrix(int x, int y)
+{ 
+    for(int i=0;i<x;i++)
+    {
+        for(int j=0;j<y;j++) 
+        {
+            if(arr[i][j] == 0)
+            {
+                cout << ".";
+            }
+            else
+            {
+                cout << "O";
+            }
+        }
+    cout << endl;
+    }
+}
+
+bool will_explode(int x)
+{
+    if(++x == 4)
+        return true;
+
+    return false;
+}
+
+   
 int main() {
 
-	cin >> r >> c >> n;
-	int time = 0;
+    cin >> r >> c >> n;
 
-	for(int i=0;i<r;i++){
-		string s;
-		cin >> s;
-		for(int j=0;j<c;j++){
-			if(s[j] == '.')				
-				arr[i][j] = 0;
-			else
-				arr[i][j] = 1;
-		}
-	}
+    for(int i=0;i<r;i++)
+    {
+        string s;
+        cin >> s;
 
-	for(int i=0;i<r;i++)
-		for(int j=0;j<c;j++){
-			if(arr[i][j] == 1)
-				g1[i][j] = 2;
-		}
-	time = 1;
+        for(int j=0;j<c;j++)
+        {
+            if(s[j] == '.')
+            {                
+                arr[i][j] = 0; // empty
+            }
+            else
+            {
+                arr[i][j] = 2; // bomb
+            }
+        }
+    }
+    
 
-	for(int i=0;i<r;i++)
-		for(int j=0;j<c;j++){
-			g2[i][j] = g1[i][j] + 1;
-		}
-	time = 2;
+    long time =2;
 
-	for(int i=0;i<r;i++)
-		for(int j=0;j<c;j++){
-			if(g2[i][j] == 1 || g2[i][j] == 2)
-				g3[i][j] = g2[i][j] + 1;
-			
-			}
+    /* Pattern repeats and hence this :-) */
+    if(n > 100000)
+	n = n%64;
+    else if (n > 1000)
+        n = n%32;
+    else if (n > 100)
+        n = n%16;
 
-	for(int i=0;i<r;i++)
-		for(int j=0;j<c;j++){
-			if (g2[i][j] == 3){
-				for(int k=0;k<4;k++){
-					int x = i + arrx[k];
-					int y = j + arry[k];
-					if(issafe(x,y))
-						g3[x][y] = 0;
-				}
-			}
-		}
+    while(time <= n)
+    {
+	bool visited[dim][dim] = { { false } };
 
-	time = 3;
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if(will_explode(arr[i][j]))
+                {
+		    arr[i][j] = 0 ;
+                    visited[i][j] = true ;
 
-	for(int i=0;i<r;i++)
-		for(int j=0;j<c;j++){
-			g4[i][j] = g3[i][j] + 1;
-		}
+    		    for(int s=0;s<4;s++)
+                    {
+	                int a = offsetx[s];
+	                int b = offsety[s];
 
-	time =4;
-
-
-	if(n%4 == 1){
-		for(int i=0;i<r;i++){
-			for(int j=0;j<c;j++){
-				if(g1[i][j] == 0)
-					cout << ".";
-				else
-					cout << "O";
-				// cout << g1[i][j];
-			}
-		cout << endl;
-		}
-	}
-	else if (n%4 == 2){
-		for(int i=0;i<r;i++){
-			for(int j=0;j<c;j++){
-				if(g2[i][j] == 0)
-					cout << ".";
-				else
-					cout << "O";
-				// cout << g2[i][j];
-			}
-		cout << endl;
-		}
-
-	}
-	else if(n%4 == 3){
-		for(int i=0;i<r;i++){
-			for(int j=0;j<c;j++){
-				if(g3[i][j] == 0)
-					cout << ".";
-				else
-					cout << "O";
-				// cout << g3[i][j];
-			}
-		cout << endl;
-		}
-
-	}
-	else{
-		for(int i=0;i<r;i++){
-			for(int j=0;j<c;j++){
-				if(g4[i][j] == 0)
-					cout << ".";
-				else
-					cout << "O";
-				// cout << g4[i][j];
-			}
-		cout << endl;
-		}
-
-	}
-
-
+                        if(issafe(i + a,j + b)
+                           && (!will_explode(arr[i + a][j + b]))
+                           && visited[i + a][j + b] == false)
+                           {
+                            arr[i + a][j + b] = 0;
+                            visited[i + a][j + b] = true;
+                           }
+                    }
+                    //cout << "Bombs found at: " << i << " "  << j << endl;
+                }
+		else if (visited[i][j] == false)
+                         ++arr[i][j]; // increment bomb counter
+            }
+        }
+    /*
+    cout << "At time: " << time << endl;    
+    show_matrix(r,c);
+    */
+    ++time;
+    }
+    /* Output */
+    show_matrix(r,c);
 }

@@ -1,46 +1,41 @@
-#include<bits/stdc++.h>
-
+#include<iostream>
+#include<string>
+#include<stack>
 using namespace std;
 
-int main() {
-	int T;
+int main()
+{
+	string s;
+	cin >> s;
 
-	cin >> T;
+	stack <string> stk;
 
-	while(T) {
+	int x=0;
+	int y=0;
 
-		string s;
-		cin >> s;
-
-		int len =s.length();
-
-		stack <string> stk;
-
-		int i=0;
-		while(i != s.length()){
-			string new_s;
-			while( s[i] != '.' ){
-				
-				new_s.append(s,i,1);
-				i++;
-			}
-			
-			stk.push(new_s); 
-			i++;
+	while(y < s.length())
+	{
+		if(s[y] == '.')
+		{
+			string temp = s.substr(x,(y-x));
+			y++;
+			x = y;
+			stk.push(temp);
 		}
-
-		while(!stk.empty()){
-			string s1 = stk.top();
-			stk.pop();
-			cout << s1 << "." ;  
-		}
-		cout << endl;
-
-
-		T--;
-
-	} 
+		else
+			y++;
+	}
 	
+	/* last word insertion */
+	stk.push(s.substr(x,(y-x)));
 
-	return 0;
+	while(!stk.empty())
+	{
+		string temp = stk.top();
+		stk.pop();
+		if(stk.empty())
+			cout << temp << endl;
+		else
+			cout << temp << ".";
+	}
 }

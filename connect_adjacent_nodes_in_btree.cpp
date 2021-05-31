@@ -56,6 +56,24 @@ void print_nodes(node* temp) {
 
 }
 
+void preorder(node* temp){
+
+	if(temp){
+		cout << temp->data << " --> " ;
+		if(temp->nextright)
+			cout << temp->nextright->data;
+		
+		cout << endl;
+
+	}
+
+	else
+		return;
+
+	preorder(temp->left);
+	preorder(temp->right);
+}
+
 
 int main() {
 
@@ -69,5 +87,6 @@ int main() {
 	connect();
 
 	node* temp = root;
-	print_nodes(temp);
+	preorder(root);
+	// print_nodes(temp);
 }

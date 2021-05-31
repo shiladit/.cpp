@@ -1,47 +1,76 @@
-#include<bits/stdc++.h>
+//shiladitya
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+#define ll long long
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define mod (1000*1000*1000+7)
+#define vi vector < int >
+#define vb vector < bool >
+#define vl vector < ll >
+#define vvi vector < vector <int> >
+#define vvc vector < vector <char> > 
+#define pqueue priority_queue< int >
+#define pdqueue priority_queue< int,vi ,greater< int > >
 
 using namespace std;
 
-/* TLE..  to remove you need to do binary search on the days.. set lower_limit of days to 0 and upper_limit of days as 10^14.. 
-Check the middle value of it.. calculate work done on that day, if less move to left side of the search range , else move to right
-Keep doing this untill you get the desired value */
+int main(){
 
-int main() {
-    long n,goal,temp;
-    
-    set <long> s;
-    map <long,long> umap;
-    
-    cin >> n >> goal;
-    
-    for(int i=0;i<n;i++){
-        cin >> temp;
-        s.insert(temp);
-        
-        if(umap.find(temp) == umap.end())
-            umap[temp] =1 ;
-        else
-            umap[temp]++;
-    }
-    
-    // print_map(umap);
-    // print_set(s);
-    
-    long count=0;
-    
-    set <long> :: iterator it;
-    
-    long sum =0;
-    long day = *s.begin();
-    
-    while(sum < goal){
-       
-        for(it = s.begin() ; it != s.end() && sum < goal ; it++){
-            if(day%*it == 0)
-                sum = sum + umap[*it];
-        }
-        
-        cout << "Day: " << day << " Sum: " << sum << endl;
-    }
-        cout << day-1 << endl;
-    }
+	ll n,goal;
+	cin >> n >> goal;
+
+	vector <ll> arr(n);
+
+	for(long i=0;i<n;i++)
+		cin >> arr[i];
+	
+	ll l_limit = 0;
+	ll u_limit = 100000000000000;
+
+	bool satisfied = false;
+
+	ll med = -1;
+
+	while(!satisfied){
+
+		if(u_limit > l_limit)
+			med = (l_limit+u_limit-1)/2;
+		else{
+			satisfied = true;
+			continue;
+		}
+
+		long iteration_count  = 0;
+
+		for(long i=0;i<n;i++)
+			iteration_count += med/arr[i];
+		if(iteration_count == goal)
+			satisfied = true;
+		else if(iteration_count > goal)
+			u_limit = med;
+		
+		else if(iteration_count < goal)
+			l_limit = med+1;
+		
+		else
+			;
+	}
+
+	/* After finding approximate range, we check within +5 and -5 bounds of the range to see what satisfies */
+
+	for(long i=(med+5);i>(med-5);i--){
+		long iteration_count  = 0;
+
+		for(long j=0;j<n;j++)
+			iteration_count += i/arr[j];
+
+		if(iteration_count >= goal && i<(med+5))
+			med = i;
+	}
+
+	cout << med << endl;
+}

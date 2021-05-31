@@ -78,9 +78,4 @@ int main() {
         cout << "0" << endl;
     else
         cout << max_val << endl;
-    
-    
-    
-    
-    
 }

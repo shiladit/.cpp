@@ -1,125 +1,145 @@
-//shiladitya
-#include <bits/stdc++.h>
-#define ll long long
-#define f(i,a,b) for(ll i=a;i<b;i++)
-#define pb push_back
-#define mp make_pair
-#define mod (1000*1000*1000+7)
-#define vi vector < int >
-#define vl vector < ll >
-#define pqueue priority_queue< int >
-#define pdqueue priority_queue< int,vi ,greater< int > >
-
+#include <iostream>
+#include <queue>
 using namespace std;
 
-char arr[100][100];
-int decision[100][100];
-bool visited[100][100];
+#define dim 100
+#define viability(index_1,index_2) isSafe(index_1,index_2) && \
+		(visited[index_1][index_2] == false) && \
+		(arr[index_1][index_2] != 'X') \
+
 int n,m;
-int movex[4] = {-1,1,0,0};
-int movey[4] = {0,0,-1,1};
+int arr[dim][dim];
+int visited[dim][dim];
+int move_x[4] = {-1,1,0,0};
+int move_y[4] = {0,0,-1,1};
 
-bool issafe(int x,int y){
-  if(x >=0 && x<n && y >=0 && y <m)
-    return true;
-  else
-    return false;
+struct node {
+	int x_val;
+	int y_val;
+	int decisions; // no of decisions made till this point (x,y)
+};
+
+bool isSafe(int x,int y)
+{
+	if(x >=0 && x<n && y >=0 && y <m)
+		return true;
+	else
+		return false;
 }
 
-int neighbours(int x,int y){
+/* this function returns the no. of viable
+neighbours for a given index */
+int find_num_neigh(int x, int y)
+{
+	int count = 0;
 
-    int count = 0;
-
-    for(int i=0;i<4;i++){
-      if(issafe(x+movex[i],y+movey[i]) && arr[x+movex[i]][y+movey[i]] == '.' && visited[x+movex[i]][y+movey[i]] == false)
-        count++;
-    }
-
-return count;
+	for(int i=0;i<4;i++)
+	{
+		int a = x + move_x[i];
+		int b = y + move_y[i];
+		if(viability(a,b))
+		{
+			count++;
+		}
+	}
+	return count;
 }
 
-int main() {
- 
-  int t;
-  cin >> t;
-  while(t--){
-  
-    cin >> n >> m;
+node* alloc_node(int x,int y)
+{
+	node* temp = (node*)malloc(sizeof(node));
+	temp->x_val = x;
+	temp->y_val = y;
+	/* we are not initializing decisions */
+	return temp;
+}
 
-    int startx = -1;
-    int starty = -1;
+int main()
+{
+	int t;
+	cin >> t;
 
-    int endx = -1;
-    int endy = -1;
+	while(t--)
+	{
+		int start_x,start_y,port_x,port_y;
+		cin >> n >> m;
 
-    f(i,0,n)
-      f(j,0,m){
-        char c;
-        cin >> c;
-        arr[i][j] = c;
+		for(int i=0;i<n;i++)
+		{
+			string s;
+			cin >> s;
 
-        if(c == 'M'){
-          startx =i;
-          starty =j;
-        }
+			for(int j=0;j<s.length();j++)
+			{
+				arr[i][j] = s[j];
+				/* initialize visited array */
+				visited[i][j] = false;
 
-        if(c == '*'){
-          endx =i;
-          endy= j;
-        }
+				if(s[j] == 'M')
+				{
+					start_x = i;
+					start_y = j;
+				}
 
-        //mandate
-        decision[i][j] = 10000;
-        visited[i][j] = false;
-      }
+				if(s[j] == '*')
+				{
+					port_x = i;
+					port_y = j;
+				}
+			}
+		}
 
-    int k;
-    cin >> k;
+		int k;
+		cin >> k;
 
+		int answer = 0;
 
-    queue<pair<pair<int,int>,int> > q;
+		queue <node *> q;
+		node* start_node = alloc_node(start_x,start_y);
+		start_node->decisions = 0; /* no decisions has been made yet */
 
-    visited[startx][starty] = true;
-    q.push(make_pair(make_pair(startx,starty),0));
+		q.push(start_node);
+		visited[start_x][start_y] = true;
 
-    while(!q.empty()){
+		while(!q.empty())
+		{
+			node* temp = q.front();
+			q.pop();
 
-      pair<pair<int,int>,int> p = q.front();
-      q.pop();
+			/* if I have reached portkey, store answer and break out */
+			if((temp->x_val == port_x) && (temp->y_val == port_y))
+			{
+				answer = temp->decisions;
+				break;
+			}
 
-      // decision[p.first.first][p.first.second] = p.second ;
+			/* Calculate no of viable path from the index */
+			int no_of_viable_paths = find_num_neigh(temp->x_val, temp->y_val);
 
-      cout << p.first.first << "," << p.first.second << "  decision: " << p.second << endl;
+			/* Compute for neighbours reachable from current indices */
+			for(int i=0;i<4;i++)
+			{
+				int off1 = temp->x_val + move_x[i];
+				int off2 = temp->y_val + move_y[i];
 
-      // if(arr[p.first.first][p.first.second] == '*'){
-      //   cout << p.second << endl;
-      //   break;
-      // }
+				if(viability(off1,off2))
+				{
+					node* new_temp = alloc_node(off1,off2);;
 
-      // f(i,0,4){
-      //   if(issafe(p.first.first+movex[i],p.first.second+movey[i]) && visited[p.first.first+movex[i]][p.first.second+movey[i]] == false && arr[p.first.first+movex[i]][p.first.second+movey[i]] != 'X'){
-      //     visited[p.first.first+movex[i]][p.first.second+movey[i]] = true;
+					/* If no of paths from an index is more than 1,
+					we increase the decision value, since we are
+					essentially making a decision here */
+					if(no_of_viable_paths > 1)
+						new_temp->decisions = temp->decisions + 1;
+					else
+						new_temp->decisions = temp->decisions ;
 
-    if(neighbours(p.first.first,p.first.second) >= 2){
-      cout << "neighbours " << p.first.first << "," << p.first.second << " --> " << neighbours(p.first.first,p.first.second) << endl;
-      q.push(make_pair(make_pair(p.first.first+movex[i],p.first.second+movey[i]),1+p.second));
-    }
-    else
-      q.push(make_pair(make_pair(p.first.first+movex[i],p.first.second+movey[i]),p.second));
-  }
-      
-    }
-
-
-  }
-
-
-  // for(int i=0;i<n;i++){
-  //   for(int j=0;j<m;j++)
-  //     cout << decision[i][j] << " ";
-
-  //   cout << endl;
-  // }
-
-
+					/* insert into queue */
+					q.push(new_temp);
+					visited[off1][off2] = true;
+				}
+			}
+		}
+		(answer == k) ? cout << "Impressed\n" : cout << "Oops!\n";
+	}
 }

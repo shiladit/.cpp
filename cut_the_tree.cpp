@@ -34,7 +34,7 @@ int dfs(int node){
 
 		int sum = weights[node];
 
-		for(it = edges[node].begin(); it != edges[node].end() ;  it++){
+		for(it = edges[node].begin(); it != edges[node].end(); it++){
 			int k = *it;
 			sum = sum + dfs(k);
 		}
@@ -43,8 +43,6 @@ int dfs(int node){
 		return sum_arr[node];
 	}
 }
-
-
 
 int main() {
 
@@ -70,7 +68,6 @@ for(int i=0;i<(n-1);i++) // n-1 times the loop will iterate
 	v.push_back(make_pair(a,b));
 }
 
-
 dfs(1);
 
 int max_diff = INT_MAX;
@@ -84,8 +81,5 @@ for(int i=0;i<v.size();i++){
 	if(abs(min_val-(sum-min_val)) < max_diff)
 		max_diff = abs(min_val-(sum-min_val));	
 }
-
 cout << max_diff << endl;
 }
-
-

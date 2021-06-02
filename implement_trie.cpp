@@ -66,6 +66,25 @@ bool search_in_trie(trie * root, string s, int index)
 	}
 }
 
+trie * delete_words_in_trie(trie * root, string s, int index)
+{
+	if(index == s.length() && root->is_endof_word == true)
+	{
+		cout << "Deleting word: " << s << endl;
+		root->is_endof_word = false;
+		return root;
+	}
+	else if (root->trie_map.find(s[index]) != root->trie_map.end())
+	{
+		root->trie_map[s[index]] = delete_words_in_trie(root->trie_map[s[index]],s,index+1);
+		return root;
+	}
+	else
+	{
+		return root;
+	}
+}
+
 int main()
 {
 	struct trie * root = allocmem();
@@ -99,9 +118,10 @@ int main()
 
 				break;
 
-			/* Delete */	
+			/* Delete entire words */
 			case 3:
-
+				cin >> s;
+				root = delete_words_in_trie(root,s,0);
 				break;
 
 			default:

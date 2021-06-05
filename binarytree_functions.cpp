@@ -31,5 +31,3 @@ root = construct_tree(root); //function returns the root of the binary tree
 
 return 0;
 }
-
-

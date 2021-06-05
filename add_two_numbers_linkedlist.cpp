@@ -1,130 +1,122 @@
 #include <iostream>
-#include "stdio.h"
-
+#include <cassert>
 using namespace std;
 
-class LinkList {
-
-int val;
-LinkList *next;
-
-public:
-// create node and return the ptr to that node
-LinkList* create_node(LinkList* head,int passed_val) {
-
-LinkList* newnode = (LinkList*)malloc(sizeof(LinkList));
-newnode->val = passed_val;
-newnode->next = NULL;
-
-LinkList* trav = head;
-
-if(head == NULL) {
-	head = newnode;
-	return head;
-}
-
-while(trav->next != NULL)
-	trav = trav->next;
-
-trav->next = newnode;
-
-return head;
-}
-
-// traverse entire linked list
-void print_linklist(LinkList *head) {
-
-while(head != NULL) {
-
-cout << head->val << " --> ";
-head = head->next;
-}
-cout << "NULL" << endl;
-}
-
-LinkList* reverse_linklist(LinkList* head) {
-
-LinkList* glob_head;
-
-if(head == NULL)
-	return NULL;
-if(head->next == NULL) {
-	glob_head = head;
-	return head;
-}
-
-LinkList* newnode = reverse_linklist(head->next);
-newnode->next = head;
-head->next = NULL;
-
-return glob_head;
-}
-
-LinkList* add_numbers(LinkList* first, LinkList* second) {
-
-bool carry = false;
-LinkList* newlist = NULL;
-
-/* until both becomes equal to NULL we
-   continue to traverse the linked list.
-   If one becomes NULL 
-*/
-while(first != NULL || second != NULL || carry!= false) {
-
-int sum= 0;
-
-if(first != NULL)
-	sum+= first->val;
-
-if(second != NULL)
-	sum+= second->val;
-
-if(carry == true)
-	sum = sum + 1;
-
-if(sum > 9) {
-	carry = true;
-}
-else
-	carry = false;
-
-//cout << (sum%10);
-newlist = create_node(newlist, sum%10);
-
-if(first != NULL)
-	first = first->next;
-if(second != NULL)
-	second = second->next;
-}
-
-return newlist;
-}
-
+/* LL structure */
+struct linkedlist
+{
+	int data;
+	linkedlist * next;
 };
 
+void printlist(linkedlist * root)
+{
+	while(root != NULL)
+	{
+		cout << root->data;
+		if(root->next)
+		{
+			cout << "->";
+		}
+		else
+		{
+			cout << endl;
+		}
 
-int main() {
+		root = root->next;
+	}
+}
 
-LinkList obj;
+linkedlist * alloc_node(int val)
+{
+	linkedlist * new_node = new linkedlist;
+	new_node->data = val;
+	new_node->next = NULL;
+	return new_node;
+}
 
-LinkList* first_head = NULL;
-first_head = obj.create_node(first_head,2);
-first_head = obj.create_node(first_head,3);
-first_head = obj.create_node(first_head,5);
+linkedlist * create_linkedlist(int num)
+{
+	linkedlist * root = NULL;
 
-LinkList* sec_head = NULL;
-sec_head = obj.create_node(sec_head,9);
-sec_head = obj.create_node(sec_head,3);
-sec_head = obj.create_node(sec_head,8);
+	while(num > 0)
+	{
+		if(root == NULL)
+		{
+			root = alloc_node(num % 10);
+		}
+		else
+		{
+			linkedlist * looper = root;
+			assert(looper);
+			while(looper->next != NULL)
+			{
+				looper = looper->next;
+			}
+			/* allocate at fag end of the LL */
+			looper->next = alloc_node(num % 10);;
+		}
 
-// printing contents in the linked list
-obj.print_linklist(first_head);
-obj.print_linklist(sec_head);
+		num = num / 10;
+	}
+	return root;
+}
 
-// add two numbers which are given in reverse order
-LinkList* newlist = obj.add_numbers(first_head, sec_head);
-newlist = obj.reverse_linklist(newlist);
-obj.print_linklist(newlist);
+linkedlist * add_linkedlist(linkedlist * root1, linkedlist * root2)
+{
+	int carry = 0;
+	linkedlist * new_root = NULL;
 
-return 0;
+	/* Check if root1 or root2 is not NULL and also
+	check if we have a previous carry */
+	while((root1 != NULL || root2!= NULL) || (carry != 0))
+	{
+		int sum = 0;
+		if(root1)
+		{
+			sum += root1->data;
+			root1 = root1->next;
+		}
+		if(root2)
+		{
+			sum += root2->data;
+			root2 = root2->next;
+		}
+
+		sum += carry;
+
+		/* Creating new node and adding to the
+		front, this gives the added number in
+		correct order */
+		linkedlist * temp = new linkedlist;
+		temp->data = sum % 10;
+		temp->next = new_root;
+		new_root = temp;
+
+		if(sum >= 10)
+			carry = 1;
+		else
+			carry = 0;
+	}
+
+	return new_root;
+}
+
+int main()
+{
+	int num_1, num_2;
+	cin >> num_1 >> num_2;
+
+	linkedlist * root_1 = create_linkedlist(num_1);
+	linkedlist * root_2 = create_linkedlist(num_2);
+
+	/* DEBUG
+	printlist(root_1);
+	printlist(root_2);
+	*/
+
+	linkedlist * added_list = add_linkedlist(root_1,root_2);
+	printlist(added_list);
+
+	return 0;
 }

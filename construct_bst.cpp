@@ -1,14 +1,6 @@
 #include <iostream>
+#include "construct_bst.h"
 using namespace std;
-
-struct node
-{
-	int data;
-	int left_height;
-	int right_height;
-	node* left_node;
-	node* right_node;
-};
 
 node* allocinit_node(int val)
 {
@@ -63,7 +55,7 @@ void in_order(node* root)
 
 int main()
 {
-	struct node* bst_root = NULL;
+	node* bst_root = NULL;
 	
 	int no_of_nodes;
 	cin >> no_of_nodes;
@@ -71,7 +63,7 @@ int main()
 	{
 		int temp_val;
 		cin >> temp_val;
-		bst_root = insert_node_bsttree(root,temp_val);
+		bst_root = insert_node_bsttree(bst_root,temp_val);
 	}
 	
 	in_order(bst_root);

@@ -1,8 +1,5 @@
 #include <iostream>
-#include <vector>
 using namespace std;
-
-#define DUMMY -99
 
 struct TreeNode
 {
@@ -19,26 +16,28 @@ TreeNode* allocnode(int data)
 	return temp;
 }
 
-int tryRob(TreeNode* root, int &l, int &r)
-{
-	if(root == NULL)
-		return 0;
-
-	int ll =0;
-	int lr =0;
-	int rl =0;
-	int rr =0;
-
-	l = tryRob(root->left,ll,lr);
-	r = tryRob(root->right,rl,rr);
-
-	return max((root->val + ll + lr + rl + rr), (l + r));
-}
-
+/* For every node we check if its NULL, then
+it contributes 0 to the sum and we return 0.
+if root->left exists we recurse by skipping one level
+same for root->right.
+When we reach a leaf, whose both left and right are NULL,
+we compare the roots value + grandchildren's sum &&
+the sum of its immediate children. Why?
+Because we can select a node and its grandchildren or we can
+not select the root and only select the roots children */
 int rob(TreeNode* root)
 {
-	int l,r;
-	return tryRob(root,l,r);
+	if(!root)
+		return 0;
+
+	int value = 0;
+
+	if(root->left)
+		value += rob(root->left->left) + rob(root->left->right);
+	if(root->right)
+		value += rob(root->right->left) + rob(root->right->right);
+
+	return max((root->val + value),(rob(root->left) + rob(root->right)));
 }
 
 int main()

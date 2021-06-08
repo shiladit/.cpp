@@ -1,5 +1,6 @@
 #include <iostream>
 #include "construct_bst.h"
+#include "unistd.h"
 using namespace std;
 
 node* allocinit_node(int val)
@@ -19,12 +20,16 @@ node* insert_node_bsttree(node* root, int val)
 		return root;
 	}
 
-	if(val < root->data) 
+	if(root->data == val)
+	{
+		return NULL; // err
+	}
+	else if(val < root->data)
 	{	
 		++root->left_height;
 		root->left_node = insert_node_bsttree(root->left_node, val);
 	}
-	else
+	else if(val > root->data)
 	{
 		++root->right_height;
 		root->right_node = insert_node_bsttree(root->right_node, val);
@@ -64,9 +69,20 @@ int main()
 		int temp_val;
 		cin >> temp_val;
 		bst_root = insert_node_bsttree(bst_root,temp_val);
+		if(bst_root == NULL)
+		{
+			cout << "Panic\n";
+			goto err;
+		}
 	}
-	
+	cout << "\n\nInorder Trav:\n\n";
 	in_order(bst_root);
 
+	cout << "\n\nHeight is: " << height(bst_root) << "\n\n";
+	
 	return 0;
+err:
+	sleep(2);
+	cout << "\nFAILED !!\n";
+	return -1;
 }

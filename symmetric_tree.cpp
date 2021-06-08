@@ -1,17 +1,30 @@
-#include<bits/stdc++.h>
-
+#include<iostream>
 using namespace std;
 
-
-
-struct btree{
+struct btree
+{
 	int val;
 	btree* left;
 	btree* right;
 };
 
-btree* root;
-
+bool isSymmetric(btree* root1,btree* root2)
+{
+	if(!root1 && !root2)
+		return true;
+	else if(root1 && !root2)
+		return false;
+	else if(!root1 && root2)
+		return false;
+	else
+	/* when both are not null */
+	{
+		if(root1->val == root2->val)
+			return true & isSymmetric(root1->left,root2->right) & isSymmetric(root1->right,root2->left);
+		else
+			return false;
+	}
+}
 
 btree* insert(int new_val){
 	btree* temp = new btree;
@@ -20,36 +33,9 @@ btree* insert(int new_val){
 	return temp;
 }
 
-void pre_trav(btree* temp) {
-	if(!temp)
-		return;
-
-	cout << temp->val << " ";
-	pre_trav(temp->left);
-	pre_trav(temp->right);
-
-}
-
-bool isSymmetric(btree* temp1,btree* temp2){
-
-	bool flag = true;
-
-	if((temp1 != NULL && temp2 == NULL ) || (temp2 != NULL && temp1 == NULL ))
-		return false;
-
-	if(temp1 == NULL && temp2 == NULL)
-		return true;
-
-	if(temp1->val != temp2->val)
-		return false;
-
-	flag = isSymmetric(temp1->left,temp2->right) && isSymmetric(temp1->right,temp2->left);
-
-	return flag; 
-}
-
-int main() {
-
+int main()
+{
+	btree* root = NULL;
 	root = insert(1);
 	root->left = insert(2);
 	root->right = insert(2);
@@ -58,17 +44,8 @@ int main() {
 	root->right->left = insert(4);
 	root->right->right = insert(3);
 
-	btree* temp = root;
-
-	pre_trav(temp);
-	cout << endl;
-
-	bool flag = isSymmetric(temp,temp);
-
-	if(flag == true)
+	if(isSymmetric(root,root))
 		cout << "Symmetric\n";
 	else
 		cout << "Not Symmetric\n";
-
-
 }

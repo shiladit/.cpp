@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
 int main() {
@@ -16,9 +15,8 @@ int main() {
         p.push(temp);
     }
 
-    // cout << p.top() << endl;
-
-    while(p.size() != 1 && p.top() < k ){
+    while(p.size() != 1 && p.top() < k )
+    {
         int least = p.top();
         p.pop();
         int lesser = p.top();
@@ -28,15 +26,10 @@ int main() {
         p.push(new_s);
 
         count++;
-
-
     }
 
     if(p.size() ==1 && p.top() < k)
         cout << "-1" << endl;
     else
         cout << count << endl;
-    
-
-
 }

@@ -1,13 +1,11 @@
 
 /* https://www.evernote.com/client/snv?noteGuid=f9e55a78-d609-43ab-80d4-860183500e45&noteKey=4415117d85cbb065&sn=https%3A%2F%2Fwww.evernote.com%2Fshard%2Fs337%2Fsh%2Ff9e55a78-d609-43ab-80d4-860183500e45%2F4415117d85cbb065&title=HackerRank */
 
-
-
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int find_mono_decrease(vector <int> arr){
+int find_mono_decrease(vector <int> arr)
+{
     priority_queue <int, vector <int> , greater <int> > pq;
 
     int sum =0;
@@ -26,7 +24,8 @@ int find_mono_decrease(vector <int> arr){
     return sum ;
 }
 
-int find_mono_increase(vector <int> arr){
+int find_mono_increase(vector <int> arr)
+{
     priority_queue <int> pq;
 
     int sum =0;
@@ -45,7 +44,8 @@ int find_mono_increase(vector <int> arr){
     return sum;
 }
 
-int main() {
+int main()
+{
     int size;
     cin >> size;
 
@@ -59,8 +59,6 @@ int main() {
 
     int a = find_mono_decrease(arr); 
     int b = find_mono_increase(arr);
-
-//     cout << a << " -- " << b << endl;
 
     cout << min(a,b) << endl;
 }

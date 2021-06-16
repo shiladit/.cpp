@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-bool comp(pair <long,long> &a,pair <long,long> &b){
+bool comp(pair <long,long> &a,pair <long,long> &b)
+{
     if (a.first < b.first) 
         return true;
     else if(a.first == b.first)
@@ -11,7 +11,8 @@ bool comp(pair <long,long> &a,pair <long,long> &b){
         return false;
 }
 
-int main(){
+int main()
+{
     long cust,order_no,prep_time;
     cin >> cust;
         
@@ -30,8 +31,6 @@ int main(){
         pair <long,long> p = *it;
         cout << p.second << " ";
     }
-    
+
     cout << endl;
-    
-    
 }

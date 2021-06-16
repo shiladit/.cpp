@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-int main(){
+int main()
+{
     long n;
     cin >> n;
     
@@ -27,9 +27,7 @@ int main(){
         }
         else 
             ;
-        
-        
     }
-    
+
     cout << 2*count << endl;
 }

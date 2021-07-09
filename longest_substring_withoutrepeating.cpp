@@ -19,12 +19,12 @@ int long_sub_worep(string s)
 
 	while(j < n)
 	{
-        // not present in map
+        	// not present in map
 		if(umap.find(s[j]) == umap.end())
 		{
 			umap[s[j]] = j;
 		}
-        // present in map
+        	// present in map
 		else
 		{
 			int index = umap[s[j]];

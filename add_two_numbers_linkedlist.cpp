@@ -9,6 +9,7 @@ struct linkedlist
 	linkedlist * next;
 };
 
+/* DEBUG FUNCTION */
 void printlist(linkedlist * root)
 {
 	while(root != NULL)
@@ -35,26 +36,26 @@ linkedlist * alloc_node(int val)
 	return new_node;
 }
 
+/* This function takes an int, and converts
+it to a linked list where each node in the
+linked list represents a digit from the int */
 linkedlist * create_linkedlist(int num)
 {
 	linkedlist * root = NULL;
+	linkedlist * looper = NULL;
 
 	while(num > 0)
 	{
 		if(root == NULL)
 		{
 			root = alloc_node(num % 10);
+			looper = root;
 		}
 		else
 		{
-			linkedlist * looper = root;
-			assert(looper);
-			while(looper->next != NULL)
-			{
-				looper = looper->next;
-			}
 			/* allocate at fag end of the LL */
-			looper->next = alloc_node(num % 10);;
+			looper->next = alloc_node(num % 10);
+			looper = looper->next;
 		}
 
 		num = num / 10;
@@ -107,13 +108,9 @@ int main()
 	int num_1, num_2;
 	cin >> num_1 >> num_2;
 
+	/* creates LL from the integer and returns the root of the LL */
 	linkedlist * root_1 = create_linkedlist(num_1);
 	linkedlist * root_2 = create_linkedlist(num_2);
-
-	/* DEBUG
-	printlist(root_1);
-	printlist(root_2);
-	*/
 
 	linkedlist * added_list = add_linkedlist(root_1,root_2);
 	printlist(added_list);

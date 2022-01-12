@@ -43,11 +43,12 @@ for(int i=0;i<E;i++){
 	int a,b;
 	cin >> a >> b;
 	// cout << b << endl;
-	if(adj[a] == NULL){
+	if(adj[a] == NULL)
+	{
 		adj[a] = new_node(b);
-
 	}
-	else{
+	else
+	{
 		node* temp = adj[a];
 		// cout << "Hi\n";
 		while(temp->next)

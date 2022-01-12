@@ -45,6 +45,7 @@ vector < vector <int> > threeSum(vector <int> &nums)
 					else
 						break;
 				}
+				
 				while(low < high)
 				{
 					if(nums[high] == nums[high - 1])
@@ -73,6 +74,7 @@ int main()
 	}
 
 	vector < vector <int> > result = threeSum(arr);
+
 	for(int i=0;i<result.size();i++)
 	{
 		for(int j=0;j<result[i].size();j++)

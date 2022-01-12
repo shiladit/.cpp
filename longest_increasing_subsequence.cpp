@@ -6,6 +6,7 @@ int compute_lis(vector <int> &arr)
 {
 	int n = arr.size();
 	int max_sub = 1;
+
 	/* This result array stores the length of lis if it ends at index i 
 	Start with all elements of result set to 1, since each can form a 1
 	length lis. Now for every i, we look at all possible j before i. If
@@ -37,7 +38,9 @@ int main()
 {
 	int n;
 	cin >> n;
+
 	vector <int> arr(n);
+
 	for(int i=0;i<n;i++)
 	{
 		cin >> arr[i];

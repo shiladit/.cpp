@@ -17,11 +17,17 @@ TreeNode* new_node(int val){
 	return temp;
 }
 
+/* Adjacency List DS */
 map <int, vector <int> > adj_list;
+
+/* Stores final result */
 vector <int> result;
 
 void build_graph(TreeNode* root)
 {
+    if(!root)
+        return;
+
     if(root->left)
     {
         adj_list[root->val].push_back(root->left->val);
@@ -60,6 +66,7 @@ void dfs(int val, int k, vector <bool> visited)
 vector <int> distance(TreeNode* root,TreeNode* target,int k)
 {
 
+    /* base case */
     if(k <= 0)
     {
         result.push_back(target->val);
@@ -68,28 +75,22 @@ vector <int> distance(TreeNode* root,TreeNode* target,int k)
 
     TreeNode* temp = root;
 
+    /* build a graph DS from the tree, since its easier to
+    calculate nodes at distance k in a graph */
     build_graph(temp);
 
     map <int, vector <int> > :: iterator it;
 
-    /* DEBUG
-    for(it = adj_list.begin(); it!=adj_list.end(); it++)
-    {
-        cout << it->first << " --> ";
-        vector <int> temp = it->second;
-        for(int i=0;i<temp.size();i++)
-            cout << temp[i] <<  " ";
-        cout << endl;
-    }
-    */
-
     it = adj_list.find(target->val);
+
+    /* if target doesn't exist then return blank result */
     if(it == adj_list.end())
     {
         return result;
     }
     
     vector <int> arr = it->second;
+    
     vector <bool> visited(1000, false);
     visited[it->first] = true;
 
@@ -104,6 +105,7 @@ vector <int> distance(TreeNode* root,TreeNode* target,int k)
 
 int main() {
 
+    /*Create dummy tree */
     root = new_node(3);
     root->left = new_node(5);
     root->right = new_node(1);
@@ -114,7 +116,10 @@ int main() {
     root->right->left = new_node(0);
     root->right->right = new_node(8);
 
+    /* target node, we need to compute nodes at
+    distance k from this target node */
     TreeNode* target = root->left->right->right;
+
     int k;
     cin >> k;
 

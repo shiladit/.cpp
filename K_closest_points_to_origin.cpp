@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <cmath>
+
 using namespace std;
 
 int compute_distance(int x,int y)

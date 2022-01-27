@@ -8,16 +8,16 @@ struct node {
 	node* right;
 };
 
-node* newNode(int new_val){
-	
+node* newNode(int new_val)
+{	
 	node* temp = new node;
 	temp->val = new_val;
 	temp->left = temp->right = NULL;
 	return temp;
-
 }
 
-bool check_same(node* temp1,node* temp2){
+bool check_same(node* temp1,node* temp2)
+{
 	if(temp1 == NULL && temp2 == NULL)
 		return true;
 	if(temp1 == NULL && temp2)
@@ -31,7 +31,6 @@ bool check_same(node* temp1,node* temp2){
 	return check_same(temp1->left,temp2->left) && check_same(temp1->right,temp2->right);
 
 	return false;
-
 }
 
 
@@ -62,5 +61,3 @@ int main()
   else
   	cout << "NOT SAME\n";
 }
-
-  

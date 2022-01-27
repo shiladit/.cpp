@@ -2,7 +2,8 @@ class Solution {
 public:
     /* GIST:
     in the first pass I record counts of every character in a hashmap
-    in the second pass I locate the first character that appear less than k times in the string. this character is definitely not included in the result, and that separates the string into two parts.
+    in the second pass I locate the first character that appear less than k times in the string.
+    This character is definitely not included in the result, and that separates the string into two parts.
     keep doing this recursively and the maximum of the left/right part is the answer.
     */
 

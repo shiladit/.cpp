@@ -37,10 +37,11 @@ int minDeletions(string s)
     }
 
     int sum = 0;
-    set <int> mp;
-
+    
     /* sort by non-increasing order of frequencies */
     sort(freq.begin(),freq.end(),compare);
+
+    set <int> mp;
 
     /* put frequencies in the map if not equal to 0 */
     for(int i=0;i<freq.size();i++)

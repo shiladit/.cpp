@@ -1,14 +1,17 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <algorithm>
 using namespace std;
 
 /* Idea is to look at the left wall and right wall for
 every element and calculate water contained within these.
 
 	for this we look at middle element and look at its
-	left wall and right wall. Calculate the distance
-	between the two, right_index - left_index + 1.
+	left wall and right wall (max on the left side of
+	the array and max on the right side of the array). 
+	Calculate the distance between the two, 
+	right_index - left_index + 1.
 	And multiply this with the minimum height of these 2
 	walls minus the size of the middle wall since it
 	doesn't contribute to the total water held.
@@ -25,42 +28,34 @@ every element and calculate water contained within these.
 
 int trap(vector <int> &height)
 {
-	stack <int> stk;
 	int n = height.size();
-	int area = 0;
+	int water = 0;
 
-	for(int i=0;i<n;i++)
+	int max_left[n];
+	int max_right[n];
+
+	max_left[0] = height[0];
+
+	for(int i=1;i<n;i++)
 	{
-		while(!stk.empty())
-		{
-			int top_index = stk.top();
-
-			if(height[top_index] < height[i])
-			{
-				int mid_ht = height[top_index];
-				stk.pop();
-
-				/* if there is no left wall, break */
-				if(stk.empty() == true)
-					break;
-
-				int left_ht = height[stk.top()];
-				int left_index = stk.top();
-				int right_ht = height[i];
-				int right_index = i;
-
-				int min_height = min(right_ht,left_ht) - mid_ht;
-				int distance = right_index - (left_index + 1);
-
-				area = area + (distance * min_height);
-			}
-				else
-					break;
-		}
-		stk.push(i);
+		max_left[i] = max(max_left[i-1],height[i]);
 	}
 
-	return area;
+	max_right[n-1] = height[n-1];
+
+	for(int i=n-2;i>=0;i--)
+	{
+		max_right[i] = max(max_right[i+1],height[i]);
+	}
+
+	for(int i=1;i<n-1;i++)
+	{
+		int temp = min(max_right[i+1],max_left[i-1]);
+		if(temp > height[i])
+			water += temp - height[i];
+	}
+
+	return water;
 }
 
 int main()

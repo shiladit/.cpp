@@ -16,10 +16,10 @@ bool canPartition_with_ksum(vector <int> &arr, vector <bool> visited, int sum, i
 		if(!visited[i])
 		{
 			visited[i] = true;
-			return canPartition_with_ksum(arr, visited, sum + arr[i], target, k);
+			if(canPartition_with_ksum(arr, visited, sum + arr[i], target, k))
+				return true;
+			visited[i] = false;
 		}
-
-		visited[i] = false;
 	}
 
 	return false;
